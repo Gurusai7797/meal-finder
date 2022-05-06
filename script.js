@@ -109,7 +109,7 @@ function randomCall() {
     });
 }
 
-// Event Lisentener
+// Event Listeners
 
 submit.addEventListener('submit', searchMeal);
 
@@ -130,3 +130,61 @@ mealsEl.addEventListener('click', (e) => {
 });
 
 random.addEventListener('click', randomCall);
+
+// to display default meals
+
+function defaultMeals() {
+  let al = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+  ];
+
+  // const alpha = Math.random().toString(36).slice(-1);
+  const alpha = al[Math.floor(Math.random() * 26)];
+  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${alpha}`)
+    .then((res) => res.json())
+    .then((data) => {
+      mealsEl.innerHTML = data.meals
+        .map(
+          (meal) => `
+            <div class="meal">
+              <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
+              <div class="meal-info" data-mealID="${meal.idMeal}">
+                <h3>${meal.strMeal}</h3>
+              </div>
+            </div>
+          `
+        )
+        .join('');
+    });
+  // console.log(alpha);
+
+  // Clear search text
+  search.value = '';
+}
+
+defaultMeals();
